@@ -70,7 +70,7 @@ export default function App() {
 
       toast({title: "Logged in successfully"})
 
-      router.push("/profile")
+      router.push("/")
     } catch (err:any) {
       toast({title: "Error occurred", variant: "destructive"})
     } finally {

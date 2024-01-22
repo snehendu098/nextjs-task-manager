@@ -24,9 +24,9 @@ export default function RootLayout({
       <body className={cn("min-h-screen bg-background font-sans antialiased", inter.variable)}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem >
           <div className="absolute top-10 right-10 flex" >
-            <div className="mr-2" >
+            {<div className="mr-2" >
             <TopMenu />  
-            </div>
+            </div>}
             <ToggleButton/>
           </div>
         {children}
