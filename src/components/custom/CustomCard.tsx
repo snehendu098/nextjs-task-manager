@@ -9,20 +9,23 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { Button } from "../ui/button"
+import { Calendar } from "lucide-react"
 
 const CustomCard = (props:any) => {
   return (
     <div className="lg:w-[calc(27%)] md:w-[calc(45%)] w-[calc(80%)] p-6" >
   <Card className="w-full">
   <CardHeader>
-    <CardTitle>Card Title</CardTitle>
-    <CardDescription className="text-blue-400 font-semibold" >Card Description</CardDescription>
+    <CardTitle>{props.title || "Card Title"}</CardTitle>
+    <CardDescription className="text-blue-400 font-semibold" >{props.status || "To-Do"}</CardDescription>
+    <div className="flex text-muted-foreground" ><Calendar/>
+            <p className="ml-2" >{props.date || "16-03-2024"}</p></div>
   </CardHeader>
   <CardContent>
-    <p>Create a content management system that does the following tasks very smoothly</p>
+    <p>{props.desc || ""}</p>
   </CardContent>
   <CardFooter>
-    <Button>Mark as completed</Button>
+    <Button onClick={props.btnClick} >{props.btnText || "Mark as Completed"}</Button>
   </CardFooter>
 </Card>
 </div>
