@@ -8,7 +8,6 @@ connect();
 export async function POST(req: NextRequest) {
   try {
     const { id } = await getTokenData(req);
-    const user = await User.findOne({ _id: id }).select("-password");
 
     const { title, description, deadLine, status } = await req.json();
 
@@ -16,7 +15,7 @@ export async function POST(req: NextRequest) {
       title,
       description,
       deadLine,
-      userId: user._id,
+      userId: id,
       status,
     });
 
@@ -26,6 +25,56 @@ export async function POST(req: NextRequest) {
       message: "Task Created Succesfully",
       success: true,
     });
+  } catch (err: any) {
+    return NextResponse.json({ error: err.message }, { status: 400 });
+  }
+}
+
+export async function GET(req: NextRequest) {
+  try {
+    const { id } = await getTokenData(req);
+
+    const tasks = await Task.find({ userId: id });
+    return NextResponse.json({ tasks, success: true });
+  } catch (err: any) {
+    return NextResponse.json({ error: err.message }, { status: 400 });
+  }
+}
+
+export async function PUT(req: NextRequest) {
+  try {
+    const reqBody = await req.json();
+    const { id, fields } = reqBody;
+
+    const data = await Task.findByIdAndUpdate(
+      id,
+      fields,
+      (err: any, docs: any) => {
+        if (err) {
+          return NextResponse.json({ message: "Error", success: false, err });
+        } else {
+          return NextResponse.json({ message: "Deleted", success: true, docs });
+        }
+      },
+    );
+  } catch (err: any) {
+    return NextResponse.json({ error: err.message }, { status: 400 });
+  }
+}
+
+export async function DELETE(req: NextRequest) {
+  try {
+    const { id } = await req.json();
+    const data = await Task.findByIdAndDelete(
+      id,
+      function (err: any, docs: any) {
+        if (err) {
+          return NextResponse.json({ message: "Error", success: false, err });
+        } else {
+          return NextResponse.json({ message: "Deleted", docs, success: true });
+        }
+      },
+    );
   } catch (err: any) {
     return NextResponse.json({ error: err.message }, { status: 400 });
   }

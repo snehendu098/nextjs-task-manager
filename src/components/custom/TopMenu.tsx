@@ -50,13 +50,6 @@ export default function TopMenu() {
     {pathName !== "/auth" ? 
     <Menubar>
       <MenubarMenu>
-        <MenubarTrigger>
-          <Link href={"/profile"} >
-          Profile
-          </Link>
-        </MenubarTrigger>
-      </MenubarMenu>
-      <MenubarMenu>
         <MenubarTrigger onClick={logoutHandler} >Log Out</MenubarTrigger>
       </MenubarMenu>
     </Menubar> : <></>}</>

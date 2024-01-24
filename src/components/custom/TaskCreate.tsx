@@ -13,6 +13,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogClose
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -32,12 +33,32 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { toast } from "../ui/use-toast"
+import axios from "axios"
  
 export function TaskCreate() {
   const [task, setTask] = useState({title: "", description: ""})
   const [date, setDate] = useState<Date>()
+  const [option, setOption] = useState("")
 
+  const submitHandler = async (e:any) => {
+    try {
+      console.log("click")
+      const {title, description} = task
 
+      const body = {title, description, status:  Number(option), deadLine: date}
+      const {data} = await axios.post("/api/tasks", body)
+      if (data.success === true) {
+        return toast({title: data.message, description: "It might take some time for the changes to reflect in your screen"})
+      } else {
+        console.log(data)
+      }
+
+    } catch (err: any) {
+      console.log(err)
+      return toast({variant: "destructive", title: "Error Occurred"})
+    } 
+  }
 
   return (
     <Dialog>
@@ -64,10 +85,10 @@ export function TaskCreate() {
             />
           </div>
           <div className="flex flex-col">
-            <Label htmlFor="username" className="text-left">
+            <Label htmlFor="username" className="text-left mb-4 ">
               Description
             </Label>
-            <Textarea placeholder="Enter task Description" />
+            <Textarea placeholder="Enter task Description" onChange={e => setTask({...task, description: e.target.value})} />
           </div>
           <div className="grid grid-cols-4 items-center gap-4" >
             <Label htmlFor="deadline" className="text-right">Deadline</Label>
@@ -96,12 +117,26 @@ export function TaskCreate() {
     </Popover>
     </div>
           </div>
-          <div className="grid grid-cols-4 gap-4" >
-            <p className="" ></p>
+          <div className="w-full" >
+            <Select onValueChange={e => setOption(e)} >
+      <SelectTrigger className="w-[180px]">
+        <SelectValue placeholder="Select Status" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectGroup>
+          <SelectLabel>Status</SelectLabel>
+          <SelectItem value="0">To Do</SelectItem>
+          <SelectItem value="1">In Progress</SelectItem>
+          <SelectItem value="2">Done</SelectItem>
+        </SelectGroup>
+      </SelectContent>
+    </Select>
           </div>
         </div>
         <DialogFooter>
-          <Button type="submit">Save changes</Button>
+        <DialogClose asChild >
+          <Button type="button" onClick={(e) => submitHandler(e)} >Save changes</Button>
+          </DialogClose>
         </DialogFooter>
       </DialogContent>
     </Dialog>

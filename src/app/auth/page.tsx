@@ -137,7 +137,7 @@ export default function App() {
               <Label htmlFor="passwd">Password</Label>
               <Input id="passw" type={!show ? "password": "text"} placeholder="Enter Your Password" onChange={e => setUser({...user, password: e.target.value})}  />
             </div>
-            <p>{!show ? "Show Password" : "Hide Password"}</p>
+            <p className="cursor-pointer" onClick={() => setShow(!show)} >{!show ? "Show Password" : "Hide Password"}</p>
           </CardContent>
           <CardFooter>
               {loading ? <Button disabled>
