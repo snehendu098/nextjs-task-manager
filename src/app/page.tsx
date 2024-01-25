@@ -20,7 +20,6 @@ export default function Home() {
     try {
       const res = await axios.get("/api/tasks")
       if (res.data.success) {
-        console.log("")
         setData(res.data.tasks)
       } else {
         console.log(data)
@@ -31,11 +30,9 @@ export default function Home() {
     }
   }
 
-  console.log(data)
-
   useEffect(() => {
     fetchData()
-  }, [])
+  }, [data])
 
 
   return (
@@ -46,8 +43,8 @@ export default function Home() {
       <div className="mt-20">
         <FilterMenu/>
       </div>
-      <div className="w-full flex justify-center  flex-wrap mt-10" >
-        {data.length > 0 ? data.map((e:any) => <CustomCard status={e.status} title={e.title} desc = {e.description} date = {format(e.deadLine, "PPP")} />) : <p>No Tasks Found</p>}
+      <div className="w-full flex justify-center flex-wrap mt-10" >
+        {data.length > 0 ? data.map((e:any) => <CustomCard id={e._id} status={e.status} title={e.title} desc = {e.description} date = {format(e.deadLine, "PPP")} />) : <p>No Tasks Found</p>}
       </div>
     </main>
   );

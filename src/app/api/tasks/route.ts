@@ -46,17 +46,9 @@ export async function PUT(req: NextRequest) {
     const reqBody = await req.json();
     const { id, fields } = reqBody;
 
-    const data = await Task.findByIdAndUpdate(
-      id,
-      fields,
-      (err: any, docs: any) => {
-        if (err) {
-          return NextResponse.json({ message: "Error", success: false, err });
-        } else {
-          return NextResponse.json({ message: "Deleted", success: true, docs });
-        }
-      },
-    );
+    const data = await Task.findByIdAndUpdate(id, fields);
+
+    return NextResponse.json({ success: true, data });
   } catch (err: any) {
     return NextResponse.json({ error: err.message }, { status: 400 });
   }
@@ -65,16 +57,9 @@ export async function PUT(req: NextRequest) {
 export async function DELETE(req: NextRequest) {
   try {
     const { id } = await req.json();
-    const data = await Task.findByIdAndDelete(
-      id,
-      function (err: any, docs: any) {
-        if (err) {
-          return NextResponse.json({ message: "Error", success: false, err });
-        } else {
-          return NextResponse.json({ message: "Deleted", docs, success: true });
-        }
-      },
-    );
+    const data = await Task.findByIdAndDelete(id);
+
+    return NextResponse.json({ success: true, data });
   } catch (err: any) {
     return NextResponse.json({ error: err.message }, { status: 400 });
   }
