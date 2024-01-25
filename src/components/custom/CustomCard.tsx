@@ -21,17 +21,19 @@ const CustomCard = (props:any) => {
 
   let status = "To Do"
   let btnText = "Mark In Progress"
+  let btnText2 = "Update to - To Do"
 
   if (props.status === 1){
     status = "In Progress"
     btnText = "Mark as Completed"
   } else if (props.status === 2) {
     status = "Completed"
+    btnText2 = "Update to - In Progress"
   }
 
- const submitHandler = async () => {
+ const submitHandler = async (a:string) => {
     try {
-      const res = await axios.put("/api/tasks", {id: props.id, fields: {status: props.status + 1}})
+      const res = await axios.put("/api/tasks", {id: props.id, fields: {status: a === "promote" ? props.status + 1: props.status - 1}})
 
       const {data} = res
       if (data.success == true) {
@@ -72,8 +74,9 @@ const CustomCard = (props:any) => {
   <CardFooter>
           <div className="flex flex-col w-full" >
             {props.status !== 2 && 
-    (!loading ? <Button onClick={submitHandler} className="w-full" >{btnText}</Button> : <Button disabled ></Button>) }
-    <Button onClick={deleteHandler} className="w-full mt-2" variant={"outline"} >Delete</Button>
+    (!loading ? <Button onClick={() => submitHandler("promote")} className="w-full" >{btnText}</Button> : <Button disabled ></Button>) }
+    {props.status !== 0 && (!loading ? <Button onClick={() => submitHandler("demote")} variant={"secondary"} className="w-full mt-2" >{btnText2}</Button> : <Button disabled >{btnText2}</Button>) }
+    <Button onClick={deleteHandler} className="w-full mt-2" variant={"destructive"} >Delete</Button>
     </div>
   </CardFooter>
 </Card>

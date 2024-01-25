@@ -1,5 +1,5 @@
 "use client"
-
+import React from 'react'
 import CustomCard from "@/components/custom/CustomCard";
 import FilterMenu from "@/components/custom/FilterMenu";
 import { TaskCreate } from "@/components/custom/TaskCreate";
@@ -15,6 +15,8 @@ import { format } from "date-fns";
 
 export default function Home() {
   const [data, setData] = useState([])
+  const [filter, setFilter] = useState(3)
+  const [filteredData, setFilteredData] = useState([])
 
   const fetchData = async () => {
     try {
@@ -30,9 +32,26 @@ export default function Home() {
     }
   }
 
+  const filterData:any = () => {
+    setFilteredData(data.filter((e:any) => {
+      if (filter !== 3) {
+
+     return e.status == filter
+      } else {
+        return e
+      }
+    }))
+  }
+
+
+
   useEffect(() => {
     fetchData()
   }, [data])
+
+  useEffect(() => {
+    filterData()
+  }, [filter, data])
 
 
   return (
@@ -41,10 +60,11 @@ export default function Home() {
         <TaskCreate/>
       </div>
       <div className="mt-20">
-        <FilterMenu/>
+        <FilterMenu filterTodo={() => setFilter(0)} filterInProg={() => setFilter(1)} filterAll={() => setFilter(3)} filterDone={() => setFilter(2)} />
       </div>
       <div className="w-full flex justify-center flex-wrap mt-10" >
-        {data.length > 0 ? data.map((e:any) => <CustomCard id={e._id} status={e.status} title={e.title} desc = {e.description} date = {format(e.deadLine, "PPP")} />) : <p>No Tasks Found</p>}
+        {filteredData.length > 0 ? filteredData.map((e:any) => <React.Fragment key={e._id} ><CustomCard id={e._id} status={e.status} title={e.title} desc = {e.description} date = {format(e.deadLine, "PPP")} /> </React.Fragment>) : <p>No Tasks Found</p>}
+        
       </div>
     </main>
   );

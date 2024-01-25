@@ -6,23 +6,23 @@ import {
 } from "@/components/ui/menubar"
  
 
-export default function TopMenu() {
+export default function TopMenu({filterTodo, filterInProg, filterAll, filterDone}:any) {
   return (
     
     <Menubar>
       <MenubarMenu>
-        <MenubarTrigger>
+        <MenubarTrigger onClick={filterAll} >
           All
         </MenubarTrigger>
       </MenubarMenu>
-      <MenubarMenu>
-        <MenubarTrigger>Todo</MenubarTrigger>
+      <MenubarMenu >
+        <MenubarTrigger onClick={filterTodo} >Todo</MenubarTrigger>
+      </MenubarMenu>
+      <MenubarMenu >
+        <MenubarTrigger onClick={filterInProg} >In Progress</MenubarTrigger>
       </MenubarMenu>
       <MenubarMenu>
-        <MenubarTrigger>In Progress</MenubarTrigger>
-      </MenubarMenu>
-      <MenubarMenu>
-        <MenubarTrigger>Completed</MenubarTrigger>
+        <MenubarTrigger onClick={filterDone} >Completed</MenubarTrigger>
       </MenubarMenu>
 
 
