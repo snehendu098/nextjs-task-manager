@@ -47,15 +47,6 @@ const CustomCard = (props:any) => {
     }
   }
 
-  /*
-  const editHandler = async () => {
-    try {
-      
-    } catch (err:any) {
-      toast({variant: "destructive", title: "Error Occurred"})
-    }
-  }*/
-
   const deleteHandler = async () => {
     try {
       const res = await axios.delete("/api/tasks", {data: {id: props.id}})
